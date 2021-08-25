@@ -1,0 +1,85 @@
+{% extends 'users/base_logged_in.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="text-right">
+            <a href="/hub/lease-applications/?newapp"><button class="btn-primary pull-right">New application</button></a>
+        </div>
+    </div>
+</div>
+{% if most_recent_lease_application %}
+<br/>
+<div class="col-xl-12 col-lg-12">
+    <div class="card db-border">
+        <div class="modal-header">
+            <h5 class="modal-title text-primary">Lease application: {{most_recent_lease_application.id}}, NIC no: {{most_recent_lease_application.nic_number}}</h5>
+        </div>
+        <div class="card-body">
+            <div class="panel-body">
+                <div class="row">
+                    <label class="col-sm-3 col-form-label">Loan amount requested (Rs):<br/>{{most_recent_lease_application.requiested_loan_amount}}
+                    </label>
+                    <label class="col-sm-3 col-form-label">Vehicle:<br/>{{most_recent_lease_application.vehicle_make}}-{{most_recent_lease_application.vehicle_model}}-{{most_recent_lease_application.vehicle_year}}
+                    </label>
+                    <label class="col-sm-3 col-form-label">Application date:<br/>{{most_recent_lease_application.application_date}}
+                    </label>
+                    <label class="col-sm-3 col-form-label">Maximum rental (Rs):<br/>{{most_recent_lease_application.first_year_max_rental}}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if most_recent_lease_application.leasecontractoffer_set.all %}
+<br/>
+<div class="col-xl-12 col-lg-12">
+    <div class="card db-border">
+        <div class="modal-header">
+            <h5 class="modal-title text-primary">Offers</h5>
+        </div>
+        <div class="card-body">
+            <div class="panel-body">
+                {% for offer in most_recent_lease_application.leasecontractoffer_set.all %}
+                <div class="row">
+                    <label class="col-sm-3 col-form-label">Loan amount (Rs):<br/>{{offer.loan_amount}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Monthly Rental:<br/>{{offer.monthly_rental}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Loan Term:<br/>{{offer.loan_term}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Penalty Interest:<br/>{{offer.penalty_interest_rate}}
+                    </label>
+                    <label class="col-sm-3 col-form-label">Document/Stamp/Other fees:<br/>{{offer.documentation_fees}} / {{offer.stamp_duty}} / {{offer.other_fees}}
+                    </label>
+                </div>
+                <hr/>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% if expired_lease_applications %}
+<br/>
+<div class="col-xl-12 col-lg-12">
+    <div class="card db-border">
+        <div class="modal-header">
+            <h5 class="modal-title text-primary">Expired applications</h5>
+        </div>
+        <div class="card-body">
+            <div class="panel-body">
+                {% for app in expired_lease_applications %}
+                {{app.requiested_loan_amount}}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}

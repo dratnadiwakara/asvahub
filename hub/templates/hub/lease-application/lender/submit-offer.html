@@ -1,0 +1,88 @@
+{% extends 'users/base_logged_in.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<div class="col-xl-12 col-lg-12">
+    <div class="card db-border">
+        <div class="modal-header">
+            <h5 class="modal-title text-primary">Application for Rs. {{lease_application.requiested_loan_amount}} for a
+                {{lease_application.vehicle_make}}-{{lease_application.vehicle_model}}-{{lease_application.vehicle_year}}; NIC number: {{lease_application.nic_number}}
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="panel-body">
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Purchase price:<br />{{lease_application.vehicle_price}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Valuation:<br />{{lease_application.vehicle_valuation}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Monthly income:<br />{{lease_application.monthly_income}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Monthly exp.:<br />{{lease_application.monthly_expenditure}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Mileage:<br />{{lease_application.vehicle_mileage}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Co-app./Guarantor:<br />{% if lease_application.co_applicant_nic_number %}Yes{% else %}No{% endif %}/{% if lease_application.guarantor_nic_number %}Yes{% else %}No{% endif %}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <!-- #### add collapsable div with more information-->
+    </div>
+</div>
+<br />
+
+<form method="POST">{% csrf_token %}
+    <div class="col-xl-12 col-lg-12">
+        <div class="card db-border">
+            <div class="card-body">
+                <div class="panel-body">
+                    <div class="row">
+                        <label class="col-sm-3 col-form-label">Offered loan amount:<br />{{form.loan_amount|attr:"class:form-control" }}
+                        </label>
+                        <label class="col-sm-3 col-form-label">Interest Rate (%):<br />{{form.interest_rate|attr:"class:form-control" }}
+                        </label>
+                        <label class="col-sm-3 col-form-label">Loan term (months):<br />{{form.loan_term|attr:"class:form-control" }}
+                        </label>
+                        <label class="col-sm-3 col-form-label">Monthly rental:<br />{{form.monthly_rental|attr:"class:form-control" }}
+                        </label>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <label class="col-sm-3 col-form-label">Documentation fees:<br />{{form.documentation_fees|attr:"class:form-control" }}
+                        </label>
+                        <label class="col-sm-3 col-form-label">Other fees:<br />{{form.other_fees|attr:"class:form-control" }}
+                        </label>
+                        <label class="col-sm-3 col-form-label">Stamp duty:<br />{{form.stamp_duty|attr:"class:form-control" }}
+                        </label>
+                        <label class="col-sm-3 col-form-label">Capitalize fees:<br />{{form.fees_included_in_loan_amount}}
+                        </label>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <label class="col-sm-3 col-form-label">Penalty interest rate (per month):<br />{{form.penalty_interest_rate|attr:"class:form-control" }}
+                        </label>
+                        <label class="col-sm-3 col-form-label">Penalty interest rate after:<br />{{form.penalty_interest_after|attr:"class:form-control" }}
+                        </label>
+                        <label class="col-sm-3 col-form-label">Prepayment rebate:<br />{{form.prepayment_rebate|attr:"class:form-control" }}
+                        </label>
+                        <label class="col-sm-3 col-form-label">First payment in:<br />{{form.first_payment_in}}
+                        </label>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <label class="col-sm-3 col-form-label">Comments:
+                        </label>
+                        <label class="col-sm-9 col-form-label">{{form.comments|attr:"class:form-control" }}
+                        </label>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <input type="hidden" name="application_id" value="{{lease_application.id}}"/>
+    <button type="submit" class="btn-primary">Submit offer</button>
+</form>
+{% endblock %}

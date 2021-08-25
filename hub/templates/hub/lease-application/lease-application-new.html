@@ -1,0 +1,238 @@
+{% extends 'users/base_logged_in.html' %}
+{% load widget_tweaks %}
+{% block content %}
+{% if most_recent_lease_application %}
+<div class="row">
+    <div class="col-xs-12">
+        <div class="text-right">
+            You have an application in progress. <a href="/hub/lease-applications/"><button class="btn-primary pull-right">View application</button></a>
+        </div>
+    </div>
+</div>
+<br/>
+{% endif %}
+<form method="POST" enctype="multipart/form-data" class="uniForm">{% csrf_token %}
+    <div class="col-xl-12 col-lg-12">
+        <div class="card db-border">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">Loan information</h5>
+            </div>
+            <div class="card-body">
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Loan amount requested (Rs):
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.requiested_loan_amount|attr:"class:form-control" }}
+                        </div>
+
+                        <label class="col-sm-3 col-form-label">Preffered loan term:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.preffered_term|attr:"class:form-control" }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Maximum rental affordable (Rs):
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.first_year_max_rental|attr:"class:form-control" }}
+                        </div>
+
+                        <label class="col-sm-3 col-form-label">Date loan required:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.date_loan_required|attr:"class:form-control" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="col-xl-12 col-lg-12">
+        <div class="card db-border">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">Applicant information</h5>
+            </div>
+            <div class="card-body">
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Last name as in NIC:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.applicant_legal_last_name|attr:"class:form-control" }}
+                        </div>
+
+                        <label class="col-sm-3 col-form-label">First name as in NIC:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.applicant_legal_first_name|attr:"class:form-control" }}
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">NIC Number:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.nic_number|attr:"class:form-control" }}
+                        </div>
+
+                        <label class="col-sm-3 col-form-label">Date of Birth:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.applicant_date_of_birth|attr:"class:form-control" }}
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Monthy income (Rs):
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.monthly_income|attr:"class:form-control" }}
+                        </div>
+
+                        <label class="col-sm-3 col-form-label">Monthly expenditure (Rs):
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.monthly_expenditure|attr:"class:form-control" }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="col-xl-12 col-lg-12">
+        <div class="card db-border">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">Vehicle information</h5>
+            </div>
+            <div class="card-body">
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Vehicle make:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.vehicle_make|attr:"class:form-control" }}
+                        </div>
+
+                        <label class="col-sm-3 col-form-label">Model:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.vehicle_model|attr:"class:form-control" }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Manufacturing year:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.vehicle_year|attr:"class:form-control" }}
+                        </div>
+
+                        <label class="col-sm-3 col-form-label">Mileage (km):
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.vehicle_mileage|attr:"class:form-control" }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Purchase price:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.vehicle_price|attr:"class:form-control" }}
+                        </div>
+
+                        <label class="col-sm-3 col-form-label">Valuation (if any):
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.vehicle_valuation|attr:"class:form-control" }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="col-xl-12 col-lg-12">
+        <div class="card db-border">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">Credit enhancements (if any)</h5>
+            </div>
+            <div class="card-body">
+                <div class="panel-body">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Co-applicant last name:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.co_applicant_last_name|attr:"class:form-control" }}
+                        </div>
+
+                        <label class="col-sm-3 col-form-label">Co-applicant first name:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.co_applicant_first_name|attr:"class:form-control" }}
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Co-applicant NIC no:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.co_applicant_nic_number|attr:"class:form-control" }}
+                        </div>
+
+                        <label class="col-sm-3 col-form-label">Co-applicant monthly income:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.co_applicant_monthly_income|attr:"class:form-control" }}
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Guarantor last name:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.guarantor_last_name|attr:"class:form-control" }}
+                        </div>
+
+                        <label class="col-sm-3 col-form-label">Guarantor last name:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.guarantor_first_name|attr:"class:form-control" }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Guarantor NIC no:
+                        </label>
+                        <div class="col-sm-3">
+                            {{ form.guarantor_nic_number|attr:"class:form-control" }}
+                        </div>
+
+                        <label class="col-sm-3 col-form-label">
+                        </label>
+                        <div class="col-sm-3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="col-xl-12 col-lg-12">
+        <div class="card db-border">
+            <div class="modal-header">
+                <h5 class="modal-title text-primary">Comments (if any)</h5>
+            </div>
+            <div class="card-body">
+                <div class="panel-body">
+                    {{ form.comments|attr:"class:form-control" }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <button class="btn btn-primary" type="submit">Apply</button>
+</form>
+{% endblock %}

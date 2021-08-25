@@ -1,0 +1,59 @@
+{% extends 'users/base_logged_in.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+{% if lease_applications %}
+<br/>
+<div class="col-xl-12 col-lg-12">
+    {% for la in lease_applications %}
+    <h3>Open Applications</h3>
+    <div class="card db-border">
+        <div class="modal-header">
+            <h5 class="modal-title text-primary">For Rs. {{la.requiested_loan_amount}} for a {{la.vehicle_make}}-{{la.vehicle_model}}-{{la.vehicle_year}}</h5> <a href="/hub/submit-offer/{{la.id}}/"><button class="btn-primary">Submit offer</button></a> <!-- #### change this to a modal-->
+        </div>
+        <div class="card-body">
+            <div class="panel-body">
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">Purchase price:<br/>{{la.vehicle_price}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Valuation:<br/>{{la.vehicle_valuation}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Monthly income:<br/>{{la.monthly_income}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Monthly exp.:<br/>{{la.monthly_expenditure}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Mileage:<br/>{{la.vehicle_mileage}}
+                    </label>
+                    <label class="col-sm-2 col-form-label">Co-app./Guarantor:<br/>{% if la.co_applicant_nic_number %}Yes{% else %}No{% endif %}/{% if la.guarantor_nic_number %}Yes{% else %}No{% endif %}
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% if existing_offers %}
+
+
+<h3>Pending Offers</h3>
+    <div class="card db-border">
+        <div class="card-body">
+            <div class="panel-body">
+                
+                    {% for la in existing_offers %}
+                    <div class="row">
+                        {{la.LeaseApplication.nic_number}}   {{la.monthly_rental}}
+                    </div>
+                {% endfor %}
+                
+            </div>
+        </div>
+    </div>
+
+
+{% endif %}
+
+
+{% endblock %}
