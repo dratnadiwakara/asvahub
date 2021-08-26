@@ -45,7 +45,7 @@
                         <label class="col-sm-3 col-form-label">Loan term (months):<br />{{form.loan_term|attr:"class:form-control" }}
                         </label>
                         <label class="col-sm-3 col-form-label">Monthly rental:<br />{{form.monthly_rental|attr:"class:form-control" }}
-                        </label>
+                            <a href=""><button class="btn btn-outline-primary btn-sm">Add structured payments</button></a></label>
                     </div>
                     <hr/>
                     <div class="row">
@@ -83,6 +83,6 @@
     </div>
     <br/>
     <input type="hidden" name="application_id" value="{{lease_application.id}}"/>
-    <button type="submit" class="btn-primary">Submit offer</button>
+     <button type="submit" class="btn-primary">Submit offer</button>
 </form>
 {% endblock %}

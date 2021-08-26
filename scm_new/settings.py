@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'tz_detect',
     'django_filters',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

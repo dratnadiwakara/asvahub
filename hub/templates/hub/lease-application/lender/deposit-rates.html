@@ -1,0 +1,45 @@
+{% extends 'users/base_logged_in.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<h3>Update Rates</h3>
+<form method="POST"  enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="deposit_rates_file">
+    <input type="submit" class="btn btn-primary" value="Upload">
+</form>
+
+{% if rates %}
+<br/>
+<div class="col-xl-12 col-lg-12">
+    
+    <h3>Current Rates</h3>
+    <div class="card db-border">
+        <div class="card-body">
+            <div class="panel-body">
+                <table class="mt-5 table table-striped table-bordered dataTable showtable" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Deposit Product</th>
+                            <th>Interest Rate</th>
+                            <th>Last Update</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rt in rates %}
+                        <tr>
+                            <td>{{rt.product}}</td>
+                            <td>{{rt.interest_rate}}</td>
+                            <td>{{rt.last_updated}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+
+{% endblock %}

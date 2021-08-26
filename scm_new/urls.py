@@ -17,11 +17,18 @@ from django.contrib import admin
 from django.urls import path, include
 from users.views import home
 from hub.views import *
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'depositinquiry', DepositInquiryViewSet)
 
 hub_urlpatterns = [
     path("lease-applications/", add_lease_application_view, name="new lease application"),
     path("view-lease-applications/", view_lease_application_view, name="view lease applications"),
-    path("submit-offer/<int:application_id>/",submit_offer_view,name="submit offer")
+    path("submit-offer/<int:application_id>/",submit_offer_view,name="submit offer"),
+    path("deposit-rates/",submit_deposit_rates_view,name="deposit rates"),
+    path("deposit-inquiry/",deposit_inquiry_view,name="deposit inquiry"),
+    path("deposit-inquiry-api/",get_deposit_inquiries_view,name="deposit inquiry api"),
 ]
 
 
@@ -35,4 +42,7 @@ urlpatterns = [
     path('', include("django.contrib.auth.urls")),
 
     path("hub/", include(hub_urlpatterns)),
+
+    path('apis/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

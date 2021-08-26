@@ -1,0 +1,59 @@
+{% extends 'users/base_logged_in.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="col-xl-12 col-lg-12">
+    <div class="card db-border">
+        <div class="modal-header">
+            <h5 class="modal-title text-primary">Select fixed deposit</h5>
+        </div>
+        <div class="card-body">
+            <div class="panel-body">
+                <form method="POST">{% csrf_token %}
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Term: {{ form.term|attr:"class:form-control" }}
+                        </label>
+                        <label class="col-sm-3 col-form-label">Rate type: {{ form.rate_type|attr:"class:form-control" }}
+                        </label>
+                        <label class="col-sm-3 col-form-label">Interest rate type: {{ form.interest_payment|attr:"class:form-control" }}
+                        </label>
+                        <label class="col-sm-3 col-form-label"><button type="submit" class="btn-primary">Search</button>
+                        </label>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br/>
+{% if rate_offers %}
+
+<div class="col-xl-12 col-lg-12">
+    <div class="card db-border">
+        <div class="modal-header">
+            If the amount is greater than Rs. 5 million, you can request a spcial rate. <a href=""><button class="btn-primary">Click here to request a special rate</button></a> 
+        </div>
+        <div class="card-body">
+                <table class="mt-5 table table-striped table-bordered dataTable showtable" style="width: 100%;">
+                    <thead>
+                        <tr>
+                            <th>Institution</th>
+                            <th>Interest Rate</th>
+                            <th>Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for rt in rate_offers %}
+                        <tr>
+                            <td>{{rt.lender.legal_name}}</td>
+                            <td>{{rt.interest_rate}}</td>
+                            <td>{{rt.last_updated}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

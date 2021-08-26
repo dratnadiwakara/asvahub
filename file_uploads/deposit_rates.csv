@@ -1,0 +1,41 @@
+id,term,rate_type,interest_payment,interest_rate
+1,1,Normal,Monthly,10
+2,1,Normal,Maturity,8
+3,1,Senior Citizen,Monthly,9
+4,1,Senior Citizen,Maturity,8
+5,3,Normal,Monthly,10
+6,3,Normal,Maturity,8
+7,3,Senior Citizen,Monthly,5
+8,3,Senior Citizen,Maturity,10
+9,6,Normal,Monthly,10
+10,6,Normal,Maturity,5
+11,6,Senior Citizen,Monthly,9
+12,6,Senior Citizen,Maturity,7
+13,12,Normal,Monthly,6
+14,12,Normal,Maturity,9
+15,12,Senior Citizen,Monthly,7
+16,12,Senior Citizen,Maturity,8
+17,15,Normal,Monthly,8
+18,15,Normal,Maturity,10
+19,15,Senior Citizen,Monthly,6
+20,15,Senior Citizen,Maturity,7
+21,18,Normal,Monthly,8
+22,18,Normal,Maturity,8
+23,18,Senior Citizen,Monthly,8
+24,18,Senior Citizen,Maturity,7
+25,24,Normal,Monthly,10
+26,24,Normal,Maturity,7
+27,24,Senior Citizen,Monthly,10
+28,24,Senior Citizen,Maturity,7
+29,36,Normal,Monthly,10
+30,36,Normal,Maturity,5
+31,36,Senior Citizen,Monthly,8
+32,36,Senior Citizen,Maturity,9
+33,48,Normal,Monthly,10
+34,48,Normal,Maturity,6
+35,48,Senior Citizen,Monthly,6
+36,48,Senior Citizen,Maturity,5
+37,60,Normal,Monthly,5
+38,60,Normal,Maturity,5
+39,60,Senior Citizen,Monthly,5
+40,60,Senior Citizen,Maturity,10

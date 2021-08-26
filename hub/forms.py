@@ -1,5 +1,12 @@
 from django import forms
-from .models import LeaseApplication, LeaseContractOffer
+from .models import *
+
+
+class DepositFilterForm(forms.Form):
+    term = forms.ModelChoiceField(queryset=DepositProduct.objects.all().values_list('term',flat=True).distinct())
+    rate_type = forms.ModelChoiceField(queryset=DepositProduct.objects.all().values_list('rate_type',flat=True).distinct())
+    interest_payment = forms.ModelChoiceField(queryset=DepositProduct.objects.all().values_list('interest_payment',flat=True).distinct())
+
 
 class DateInput(forms.DateInput):
     input_type = 'date'
