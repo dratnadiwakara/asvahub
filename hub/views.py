@@ -134,23 +134,17 @@ def post_deposit_inquiries_view(request):
         response = r.json() #https://stackoverflow.com/questions/48012447/django-transforming-form-data-to-rest-api-post-request
         #### how to send the status code back
 
-    response = response = requests.get('http://127.0.0.1:8000/apis/view-deposit-inquiries/'+request.user.email+'/')
-    inqueries = response.json()
+    if request.POST and 'delete_data' in request.POST:
+        print(request.POST['inquiry_id'])
+        r = requests.delete('http://127.0.0.1:8000/apis/depositinquiry/'+request.POST['inquiry_id']+'/')
+        print(r.json)
+
+    response = requests.get('http://127.0.0.1:8000/apis/view-deposit-inquiries/'+request.user.email+'/')
+    inquiries = response.json()
     context = {
-        "inqueries":inqueries
+        "inquiries":inquiries
     }
-    return render(request,"hub/deposit/deposit-inquiries-api.html",context)
-
-
-def get_deposit_inquiries(request):
-    #http://127.0.0.1:8000/apis/view-deposit-inquiries/dratnadiwakara2@lsu.edu/?format=json
-    response = requests.get('http://127.0.0.1:8000/apis/view-deposit-inquiries/dratnadiwakara2@lsu.edu/')
-    inqueries = response.json()
-    context = {
-        "inqueries":inqueries
-    }
-    return render(request,"hub/deposit/deposit-inquiries-api.html",context)
-
+    return render(request,"hub/deposit/deposit-rate-request.html",context)
 
 
 

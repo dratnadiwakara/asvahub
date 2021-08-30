@@ -28,9 +28,8 @@ hub_urlpatterns = [
     path("deposit-inquiries/", all_deposit_inquiries, name="view deposit inquiries"),
     path("submit-offer/<int:application_id>/",submit_offer_view,name="submit offer"),
     path("deposit-rates/",submit_deposit_rates_view,name="deposit rates"),
-    path("deposit-inquiry/",deposit_inquiry_view,name="deposit inquiry"),
-    path("deposit-inquiry-api-post/",post_deposit_inquiries_view,name="deposit inquiry api"),
-    path("deposit-inquiry-api-get/",get_deposit_inquiries,name="deposit inquiry api get"),
+    path("deposit-inquiry-standard/",deposit_inquiry_view,name="deposit inquiry"),
+    path("deposit-rate-request/",post_deposit_inquiries_view,name="deposit inquiry api"),
 ]
 
 

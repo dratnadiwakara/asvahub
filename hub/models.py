@@ -66,12 +66,12 @@ class StructuredLeasePayments(models.Model):
 class DepositInquiry(models.Model):
     inquirer_email = models.EmailField()
     deposit_amount = models.PositiveIntegerField()
-    deposit_term = models.PositiveIntegerField()
+    deposit_term = models.PositiveIntegerField(choices=)
     inquiry_date = models.DateTimeField(default=django.utils.timezone.now,null=True)
 
 
 class DepositOffer(models.Model):
-    depositinquiry = models.ForeignKey(DepositInquiry,on_delete=CASCADE)
+    depositinquiry = models.ForeignKey(DepositInquiry,on_delete=CASCADE,related_name='depositoffers')
     lender = models.ForeignKey(User,on_delete=CASCADE,limit_choices_to={'groups__name': 'borrower'})
     offered_rate = models.FloatField()
     offered_date = models.DateTimeField(default=django.utils.timezone.now)
@@ -94,3 +94,15 @@ class DepositRate(models.Model):
     interest_rate = models.FloatField(null=True,blank=True)
     last_updated = models.DateTimeField(default=django.utils.timezone.now)
 
+
+######################
+
+class AlbumApp(models.Model):
+    album_name = models.CharField(max_length=100)
+    artist = models.CharField(max_length=100)
+
+class TrackApp(models.Model):
+    album = models.ForeignKey(AlbumApp, related_name='trackapps', on_delete=models.CASCADE)
+    order = models.IntegerField()
+    title = models.CharField(max_length=100)
+    duration = models.IntegerField()

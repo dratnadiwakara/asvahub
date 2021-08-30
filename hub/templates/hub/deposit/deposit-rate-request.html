@@ -2,7 +2,7 @@
 {% load widget_tweaks %}
 {% block content %}
 
-<form action="/hub/deposit-inquiry-api-post/" method="POST" enctype="multipart/form-data" class="form-horizontal" novalidate="">{% csrf_token %}
+<form action="/hub/deposit-rate-request/" method="POST" enctype="multipart/form-data" class="form-horizontal" novalidate="">{% csrf_token %}
     <fieldset>
         <div class="form-group ">
             <label class="col-sm-2 control-label ">Deposit amount</label>
@@ -15,10 +15,24 @@
         </div>
     </fieldset>
 </form>
+<br/>
 
-{% if inqueries %}
+{% if inquiries %}
 
-
+    {% for inq in inquiries %}
+        <b>Amount (Rs): </b>{{inq.deposit_amount}}, <b>Term:</b> {{inq.deposit_term}}, <b>Inquired Date:</b> {{inq.inquiry_date}}<br/>
+        {% if inq.depositoffers %}
+            {% for offer in inq.depositoffers %}
+                Offered Rate: {{offer.offered_rate}}, Offered Date: {{offer.offered_date}}, By: {{offer.lender_name}}
+            {% endfor %}
+        {% endif %}
+        <form method="POST">{% csrf_token %}
+            <input type="hidden" name="delete_data" value="true"/>
+            <input type="hidden" name="inquiry_id" value="{{inq.id}}"/>
+            <button class="btn btn-primary">DELETE</button>
+        </form>
+        <hr/>
+    {% endfor %}
 {% endif %}
 
 {% endblock %}
