@@ -21,3 +21,10 @@ def add_deposit_products():
                 print(i)
                 dp = DepositProduct(term=m,rate_type=t,interest_payment=i)
                 dp.save()
+
+def dictfetchall(cursor):
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]

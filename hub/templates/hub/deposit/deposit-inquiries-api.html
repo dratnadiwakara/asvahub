@@ -1,0 +1,24 @@
+{% extends 'users/base_logged_in.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<form action="/hub/deposit-inquiry-api-post/" method="POST" enctype="multipart/form-data" class="form-horizontal" novalidate="">{% csrf_token %}
+    <fieldset>
+        <div class="form-group ">
+            <label class="col-sm-2 control-label ">Deposit amount</label>
+            <label class="col-sm-2"><input name="deposit_amount" class="form-control" type="number" value=""></label>
+            <label class="col-sm-2 control-label ">Deposit term</label>
+            <label class="col-sm-2"><input name="deposit_term" class="form-control" type="number" value=""></label>
+            <label class="col-sm-2 control-label "><input type="hidden" name="post_data" value="true"/> 
+                <button class="btn btn-primary js-tooltip" title=""
+                     data-original-title="Make a POST request on the Deposit Inquiry List resource">POST</button></label>
+        </div>
+    </fieldset>
+</form>
+
+{% if inqueries %}
+
+
+{% endif %}
+
+{% endblock %}

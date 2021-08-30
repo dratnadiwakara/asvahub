@@ -25,10 +25,12 @@ router.register(r'depositinquiry', DepositInquiryViewSet)
 hub_urlpatterns = [
     path("lease-applications/", add_lease_application_view, name="new lease application"),
     path("view-lease-applications/", view_lease_application_view, name="view lease applications"),
+    path("deposit-inquiries/", all_deposit_inquiries, name="view deposit inquiries"),
     path("submit-offer/<int:application_id>/",submit_offer_view,name="submit offer"),
     path("deposit-rates/",submit_deposit_rates_view,name="deposit rates"),
     path("deposit-inquiry/",deposit_inquiry_view,name="deposit inquiry"),
-    path("deposit-inquiry-api/",get_deposit_inquiries_view,name="deposit inquiry api"),
+    path("deposit-inquiry-api-post/",post_deposit_inquiries_view,name="deposit inquiry api"),
+    path("deposit-inquiry-api-get/",get_deposit_inquiries,name="deposit inquiry api get"),
 ]
 
 
@@ -44,5 +46,7 @@ urlpatterns = [
     path("hub/", include(hub_urlpatterns)),
 
     path('apis/', include(router.urls)),
+    path('apis/view-deposit-inquiries/<str:email>/',DepositInquiryList.as_view()),
+    #path('apis/view-deposit-offers/<str:email>/',DepositInquiryOffersList.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]

@@ -1,13 +1,15 @@
 from django.http import response
 from django.shortcuts import render, redirect
+from numpy import NaN
 from hub.forms import DepositFilterForm, Lease_application_main_form,Lease_contract_offer_form
 from hub.models import *
 from django.contrib.auth.decorators import login_required, user_passes_test
 from users.utils import *
 import pandas as pd
-from rest_framework import viewsets
+from rest_framework import viewsets,generics
 from .serializers import *
 import requests
+from django.db.models import Count,Max
 
 @login_required(login_url="/login/")
 @user_passes_test(lambda user: is_investor(user), login_url='/error/403', redirect_field_name=None)
@@ -93,7 +95,7 @@ def submit_deposit_rates_view(request):
     context = {
         "rates": rates,
     }
-    return render(request,"hub/lease-application/lender/deposit-rates.html",context)
+    return render(request,"hub/deposit/deposit-rates.html",context)
 
 @login_required(login_url="/login/")
 @user_passes_test(lambda user: is_investor(user), login_url='/error/403', redirect_field_name=None)
@@ -118,15 +120,78 @@ class DepositInquiryViewSet(viewsets.ModelViewSet):
     queryset = DepositInquiry.objects.all()
     serializer_class = DepositInquirySerializer
 
-def get_deposit_inquiries_view(request):
+class DepositInquiryList(generics.ListAPIView):
+    serializer_class = DepositInquirySerializer
+    def get_queryset(self):
+        inquirer_email = self.kwargs['email']
+        return  DepositInquiry.objects.filter(inquirer_email=inquirer_email)
+
+@login_required(login_url="/login/")  
+@user_passes_test(is_investor)  
+def post_deposit_inquiries_view(request):
     if request.POST and 'post_data' in request.POST:
         r = requests.post('http://127.0.0.1:8000/apis/depositinquiry/', data={'inquirer_email': request.user.email, 'deposit_amount': request.POST['deposit_amount'],'deposit_term':request.POST['deposit_term']})
         response = r.json() #https://stackoverflow.com/questions/48012447/django-transforming-form-data-to-rest-api-post-request
         #### how to send the status code back
 
-    response = requests.get('http://127.0.0.1:8000/apis/depositinquiry/')
+    response = response = requests.get('http://127.0.0.1:8000/apis/view-deposit-inquiries/'+request.user.email+'/')
     inqueries = response.json()
     context = {
         "inqueries":inqueries
     }
-    return render(request,"hub/lease-application/lender/deposit-inquiries-api.html",context)
+    return render(request,"hub/deposit/deposit-inquiries-api.html",context)
+
+
+def get_deposit_inquiries(request):
+    #http://127.0.0.1:8000/apis/view-deposit-inquiries/dratnadiwakara2@lsu.edu/?format=json
+    response = requests.get('http://127.0.0.1:8000/apis/view-deposit-inquiries/dratnadiwakara2@lsu.edu/')
+    inqueries = response.json()
+    context = {
+        "inqueries":inqueries
+    }
+    return render(request,"hub/deposit/deposit-inquiries-api.html",context)
+
+
+
+
+@login_required(login_url="/login/")  
+@user_passes_test(is_borrower)
+def all_deposit_inquiries(request):
+
+    if request.POST:
+        di = DepositInquiry.objects.get(id=request.POST['deposit_inq_id'])
+        try:
+            do = DepositOffer.objects.filter(depositinquiry=di,lender=request.user)[0]
+        except:
+            do = None
+        if di is not None and float(request.POST['offered_rate'])>0:
+            if do is not None:
+                do.offered_rate =float(request.POST['offered_rate'])
+            else:
+                do = DepositOffer(depositinquiry=di,lender=request.user,offered_rate =float(request.POST['offered_rate']))
+            do.save()
+
+    #response = requests.get('http://127.0.0.1:8000/apis/depositinquiry/')
+    #inqueries = response.json()
+    inquiries = pd.DataFrame(DepositInquiry.objects.all().values('id','deposit_amount','deposit_term','inquiry_date'))
+    offer_summary = pd.DataFrame(DepositOffer.objects.values('depositinquiry__id').annotate(max_rate=Max('offered_rate'),no_offers=Count('offered_rate')))
+    my_offer = pd.DataFrame(DepositOffer.objects.filter(lender__email='borrower@gmail.com').values('depositinquiry__id').annotate(my_max_offer=Max('offered_rate')))
+
+    if len(my_offer.index) == 0 and len(offer_summary.index) > 0:
+        offer_summary['my_max_offer'] = None
+        offer_summary = offer_summary.rename(columns={"depositinquiry__id":"id"})
+        inquiries = inquiries.merge(offer_summary, on='id',how='left')
+    elif len(my_offer.index) > 0 and len(offer_summary.index) > 0:
+        offer_summary = offer_summary.merge(my_offer,on="depositinquiry__id",how="left")
+        offer_summary = offer_summary.rename(columns={"depositinquiry__id":"id"})
+        inquiries = inquiries.merge(offer_summary, on='id',how='left')
+    else:
+        inquiries['max_rate'] = None
+        inquiries['no_offers'] = None
+        inquiries['my_max_offer'] = None
+    
+    
+    context = {
+        "inquiries":inquiries.to_dict(orient="records")
+    }
+    return render(request,"hub/deposit/deposit-inquiries.html",context)

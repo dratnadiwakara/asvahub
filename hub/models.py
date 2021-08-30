@@ -63,6 +63,19 @@ class StructuredLeasePayments(models.Model):
     rental_amount = models.FloatField()
 
 
+class DepositInquiry(models.Model):
+    inquirer_email = models.EmailField()
+    deposit_amount = models.PositiveIntegerField()
+    deposit_term = models.PositiveIntegerField()
+    inquiry_date = models.DateTimeField(default=django.utils.timezone.now,null=True)
+
+
+class DepositOffer(models.Model):
+    depositinquiry = models.ForeignKey(DepositInquiry,on_delete=CASCADE)
+    lender = models.ForeignKey(User,on_delete=CASCADE,limit_choices_to={'groups__name': 'borrower'})
+    offered_rate = models.FloatField()
+    offered_date = models.DateTimeField(default=django.utils.timezone.now)
+
 class DepositProduct(models.Model):
     term = models.PositiveIntegerField(choices=((1,1),(3,3),(6,6),(12,12),(15,15),(18,18),(24,24),(36,36),(48,48),(60,60)))
     rate_type = models.CharField(max_length=20,choices=(("Normal","Normal"),("Senior Citizen","Senior Citizen")))
@@ -81,8 +94,3 @@ class DepositRate(models.Model):
     interest_rate = models.FloatField(null=True,blank=True)
     last_updated = models.DateTimeField(default=django.utils.timezone.now)
 
-
-class DepositInquiry(models.Model):
-    inquirer_email = models.EmailField()
-    deposit_amount = models.PositiveIntegerField()
-    deposit_term = models.PositiveIntegerField()
