@@ -66,7 +66,7 @@ class StructuredLeasePayments(models.Model):
 class DepositInquiry(models.Model):
     inquirer_email = models.EmailField()
     deposit_amount = models.PositiveIntegerField()
-    deposit_term = models.PositiveIntegerField(choices=)
+    deposit_term = models.PositiveIntegerField()
     inquiry_date = models.DateTimeField(default=django.utils.timezone.now,null=True)
 
 
