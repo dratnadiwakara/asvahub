@@ -18,6 +18,8 @@ from django.urls import path, include
 from users.views import home
 from hub.views import *
 from rest_framework import routers
+from django.conf import settings
+from django.conf.urls.static import static
 
 router = routers.DefaultRouter()
 router.register(r'depositinquiry', DepositInquiryViewSet)
@@ -48,4 +50,4 @@ urlpatterns = [
     path('apis/view-deposit-inquiries/<str:email>/',DepositInquiryList.as_view()),
     #path('apis/view-deposit-offers/<str:email>/',DepositInquiryOffersList.as_view()),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
-]
+]+ static(settings.STATIC_ROOT, document_root=settings.STATIC_ROOT)
