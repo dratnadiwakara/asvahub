@@ -1,1 +1,1 @@
-web: gunicorn scm_new.wsgi
+web: gunicorn scm_new.wsgi --log-file
