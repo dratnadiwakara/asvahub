@@ -49,5 +49,7 @@ urlpatterns = [
     path('apis/', include(router.urls)),
     path('apis/view-deposit-inquiries/<str:email>/',DepositInquiryList.as_view()),
     #path('apis/view-deposit-offers/<str:email>/',DepositInquiryOffersList.as_view()),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
+    path('home/',index,name="index")
 ]+ static(settings.STATIC_ROOT, document_root=settings.STATIC_ROOT)

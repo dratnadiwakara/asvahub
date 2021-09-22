@@ -11,6 +11,9 @@ from .serializers import *
 import requests
 from django.db.models import Count,Max
 
+def index(request):
+    return render(request, "hub/index.html")
+
 @login_required(login_url="/login/")
 @user_passes_test(lambda user: is_investor(user), login_url='/error/403', redirect_field_name=None)
 def add_lease_application_view(request):
